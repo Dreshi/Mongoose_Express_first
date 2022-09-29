@@ -18,8 +18,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/farmStand')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get('/dog', (req, res) => {
-    res.send('WOOF!')
+app.get('/products', async (req, res) => {
+    // looking up all the available products
+    const products = await Product.find({})
+
+    // for testing that the products were found
+    // console.log(products)
+
+    // test with this first to see whether it works
+    // res.send('ALL PRODUCTS WILL BE HERE')
+
+    // {products} makes it available in the view
+    res.render('products/index', { products })
 })
 
 app.listen(3000, () => {
