@@ -1,0 +1,5 @@
+
+This was the used to chose the right category first. 
+<option value="fruit" <%=product.category==='fruit' ? 'selected' : '' %>>fruit</option>
+<option value="vegetable" <%=product.category==='vegetable' ? 'selected' : '' %>>vegetable</option>
+<option value="dairy" <%=product.category==='dairy' ? 'selected' : '' %>>dairy</option>
