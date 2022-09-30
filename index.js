@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
+
+
+
 
 const Product = require('./models/product');
 
@@ -17,6 +21,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/farmStand')
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 app.get('/products', async (req, res) => {
     // looking up all the available products
@@ -32,6 +38,21 @@ app.get('/products', async (req, res) => {
     res.render('products/index', { products })
 })
 
+app.get('/products/new', (req, res) => {
+    res.render('products/new')
+})
+
+app.post('/products', async (req, res) => {
+    // checking things what is getting through
+    // console.log(req.body)
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    // console.log(newProduct);
+    // res.send('Making your Product!')
+    // you have to redirect - if it is refreshed, you would create another product.
+    res.redirect(`products/${newProduct._id}`)
+})
+
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -42,6 +63,22 @@ app.get('/products/:id', async (req, res) => {
     // res.send('details page!')
     res.render('products/show', { product })
 
+})
+
+app.get('/products/:id/edit', async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    res.render('products/edit', { product })
+})
+
+app.put('/products/:id', async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
+    // check what gets put through
+    // console.log(req.body);
+    // checks whether the page is responding right
+    // res.send('PUT!!!!');
+    res.redirect(`/products/${product._id}`);
 })
 
 app.listen(3000, () => {
