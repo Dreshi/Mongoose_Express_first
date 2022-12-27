@@ -11,22 +11,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/farmStand')
         console.log(err)
     })
 
-
-// inserting one new product
-// const p = new Product({
-//     name: 'Ruby Grapefruit',
-//     price: 1.99,
-//     category: 'fruit'
-// })
-
-// p.save()
-//     .then(p => {
-//         console.log(p)
-//     })
-//     .catch(e => {
-//         console.log(e)
-//     })
-
+// An array of objects so that there is some data to work with - gets uploaded with node (.load seeds.js)
 const seedProducts = [
     {
         name: "Fairy Eggplant",

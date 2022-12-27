@@ -28,8 +28,20 @@ const categories = ['fruit', 'vegetable', 'dairy'];
 
 
 app.get('/products', async (req, res) => {
-    // looking up all the available products
-    const products = await Product.find({})
+    // for finding categories: 
+    const { category } = req.query;
+    //  checking whether there is a category:
+    if (category) {
+        const products = await Product.find({ category })
+        res.render('products/index', { products, category })
+    } else {
+        // looking up all the available products
+        const products = await Product.find({})
+        // {products} makes it available in the view
+        res.render('products/index', { products, category: 'All' })
+    }
+
+
 
     // for testing that the products were found
     // console.log(products)
@@ -37,8 +49,8 @@ app.get('/products', async (req, res) => {
     // test with this first to see whether it works
     // res.send('ALL PRODUCTS WILL BE HERE')
 
-    // {products} makes it available in the view
-    res.render('products/index', { products })
+
+
 })
 
 app.get('/products/new', (req, res) => {
